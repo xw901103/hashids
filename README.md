@@ -6,6 +6,8 @@ Ported from [Hashids.php](https://github.com/ivanakimov/hashids.php) by [ivanaki
 
 Read documentation at [http://hashids.org/php](http://hashids.org/php)
 
+#### Installation
+
 #### Example Usage
 ```swift
 var hashids = Hashids(salt:"this is my salt");

@@ -71,12 +71,13 @@ open class Hashids_<T>: HashidsGenerator where T:Equatable, T:UnsignedInteger {
 
   fileprivate var guards: [Char]
 
-  public init(salt: String!, minHashLength: UInt = 0, alphabet: String? = nil) {
+  public init(salt: String = "", minHashLength: UInt = 0, alphabet: String? = nil) {
     var _alphabet = (alphabet != nil) ? alphabet! : HashidsOptions.ALPHABET
     var _seps = HashidsOptions.SEPARATORS
 
     self.minHashLength = minHashLength
     self.guards = [Char]()
+    
     self.salt = salt.unicodeScalars.map() {
       numericCast($0.value)
     }
@@ -89,8 +90,9 @@ open class Hashids_<T>: HashidsGenerator where T:Equatable, T:UnsignedInteger {
 
     self.seps = intersection(self.alphabet, self.seps)
     self.alphabet = difference(self.alphabet, self.seps)
-    shuffle(&self.seps, self.salt)
-
+    if self.salt.count != 0 {
+        shuffle(&self.seps, self.salt)
+    }
 
     let sepsLength = self.seps.count
     let alphabetLength = self.alphabet.count
@@ -114,7 +116,9 @@ open class Hashids_<T>: HashidsGenerator where T:Equatable, T:UnsignedInteger {
       }
     }
 
-    shuffle(&self.alphabet, self.salt)
+    if self.salt.count != 0 {
+        shuffle(&self.alphabet, self.salt)
+    }
 
     let guard_i = Int(ceil(Double(alphabetLength) / HashidsOptions.GUARD_DIV))
     if alphabetLength < 3 {
